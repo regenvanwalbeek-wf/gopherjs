@@ -1,4 +1,4 @@
-module github.com/gopherjs/gopherjs
+module github.com/regenvanwalbeek-wf/gopherjs
 
 go 1.17
 
