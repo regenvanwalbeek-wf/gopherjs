@@ -77,11 +77,8 @@ type BuildCache struct {
 	GOPATH    string
 	BuildTags []string
 	Minify    bool
-	// When building for tests, import path of the package being tested. The
-	// package under test is built with *_test.go sources included, and since it
-	// may be imported by other packages in the binary we can't reuse the "normal"
-	// cache.
-	TestedPackage bool
+	// When building for tests, import path of the package being tested.
+	TestedPackage string
 }
 
 func (bc BuildCache) String() string {
@@ -150,14 +147,24 @@ func (bc *BuildCache) LoadArchive(importPath string) *compiler.Archive {
 	log.Infof("Found cached package archive for %q, built at %v.", importPath, a.BuildTime)
 	return a
 }
+// 	GOOS      string
+//	GOARCH    string
+//	GOROOT    string
+//	GOPATH    string
+//	BuildTags []string
+//	Minify    bool
 
 // commonKey returns a part of the cache key common for all artifacts generated
 // under a given BuildCache configuration.
 func (bc *BuildCache) commonKey() string {
-	return fmt.Sprintf("%#v + %v", *bc, compiler.Version)
+	return fmt.Sprintf("%v + %v + %v + %v + %v + %v + %v", bc.GOOS, bc.GOARCH, bc.GOROOT, bc.GOPATH, bc.BuildTags, bc.Minify, compiler.Version)
 }
 
 // archiveKey returns a full cache key for a package's compiled archive.
 func (bc *BuildCache) archiveKey(importPath string) string {
-	return path.Join("archive", bc.commonKey(), importPath)
+	// package under test is built with *_test.go sources included, and since it
+	// may be imported by other packages in the binary we can't reuse the "normal"
+	// cache.
+	compiledWithTests := bc.TestedPackage == importPath
+	return path.Join("archive", bc.commonKey(), importPath, fmt.Sprintf("%v", compiledWithTests))
 }
