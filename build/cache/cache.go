@@ -117,7 +117,7 @@ func (bc *BuildCache) StoreArchive(a *compiler.Archive) {
 	if err := os.Rename(f.Name(), path); err != nil {
 		log.Warningf("Failed to rename build cache archive to %q: %v", path, err)
 	}
-	log.Infof("Successfully stored build archive %q as %q.", a, path)
+	log.Infof("Successfully stored build archive %q as %q. (archive: %v)", a, path, bc)
 }
 
 // LoadArchive returns a previously cached archive of the given package or nil
