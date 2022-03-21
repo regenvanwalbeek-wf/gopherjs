@@ -21,6 +21,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/gopherjs/gopherjs/compiler"
@@ -614,12 +615,12 @@ func (s *Session) BuildPackage(pkg *PackageData) (*compiler.Archive, error) {
 				panic(fmt.Errorf("Failed to load type information from %v: %w", archive, err))
 			}
 			s.UpToDateArchives[pkg.ImportPath] = archive
-			fmt.Println("DEBUG: gopherjs cache hit (pkg: " + pkg.Dir + ")")
+			log.Warning("DEBUG: gopherjs cache hit (pkg: " + pkg.Dir + ")")
 			// Existing archive is up to date, no need to build it from scratch.
 			return archive, nil
 		}
 	}
-	fmt.Println("DEBUG: gopherjs cache miss (pkg: " + pkg.Dir + ")")
+	log.Info("DEBUG: gopherjs cache miss (pkg: " + pkg.Dir + ")")
 
 	// Existing archive is out of date or doesn't exist, let's build the package.
 	fileSet := token.NewFileSet()

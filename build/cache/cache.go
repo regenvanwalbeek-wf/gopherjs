@@ -129,7 +129,9 @@ func (bc *BuildCache) LoadArchive(importPath string) *compiler.Archive {
 	if bc == nil {
 		return nil // Caching is disabled.
 	}
-	path := cachedPath(bc.archiveKey(importPath))
+	archiveKey := bc.archiveKey(importPath)
+	log.Info("DEBUG: Checking cache for archive key: " + archiveKey)
+	path := cachedPath(archiveKey)
 	f, err := os.Open(path)
 	if err != nil {
 		if os.IsNotExist(err) {
