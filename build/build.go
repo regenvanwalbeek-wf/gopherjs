@@ -465,7 +465,7 @@ func NewSession(options *Options) (*Session, error) {
 		GOPATH:        options.GOPATH,
 		BuildTags:     options.BuildTags,
 		Minify:        options.Minify,
-		TestedPackage: options.TestedPackage,
+		TestedPackage: options.TestedPackage != "",
 	}
 	s.Types = make(map[string]*types.Package)
 	if options.Watch {

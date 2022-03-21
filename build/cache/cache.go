@@ -81,7 +81,7 @@ type BuildCache struct {
 	// package under test is built with *_test.go sources included, and since it
 	// may be imported by other packages in the binary we can't reuse the "normal"
 	// cache.
-	TestedPackage string
+	TestedPackage bool
 }
 
 func (bc BuildCache) String() string {
