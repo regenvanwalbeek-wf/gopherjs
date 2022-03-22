@@ -608,7 +608,7 @@ func main() {
 
 	{
 		var logLevel string
-		rootCmd.PersistentFlags().StringVar(&logLevel, "log_level", log.ErrorLevel.String(), "Compiler log level (debug, info, warn, error, fatal, panic).")
+		rootCmd.PersistentFlags().StringVar(&logLevel, "log_level", log.InfoLevel.String(), "Compiler log level (debug, info, warn, error, fatal, panic).")
 		rootCmd.PersistentPreRunE = func(cmd *cobra.Command, args []string) error {
 			lvl, err := log.ParseLevel(logLevel)
 			if err != nil {
